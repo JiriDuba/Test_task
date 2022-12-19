@@ -109,4 +109,4 @@ Lewis      Martin     Edward      NowRisk       Designer                        
 1. inicializujte lokální Git repozitář na svém PC,
 2. naklonujte si potřebné soubory z [GitHub](https://github.com/CSAS-TestoveZadani/Testove_zadani),
 3. vytvořte veřejný repozitář na GitHubu a propojte ho s lokálním, 
-4. odkaz na GitHub s vypracovaným zadáním pošlete na email: ***EBannikova@csas.cz*** do středy ***07. 12. 2022***.
+4. odkaz na GitHub s vypracovaným zadáním pošlete na email: ***EBannikova@csas.cz***.
