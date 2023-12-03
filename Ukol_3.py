@@ -58,10 +58,6 @@ def main():
 
     formatted_rows = create_table(raw_data)
 
-    # Print the table to the console
-    for row in formatted_rows:
-        print(row)
-
     # Write the formatted table to output.csv
     write_csv('phonebook_sorted.csv', formatted_rows)
 
