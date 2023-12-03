@@ -1,0 +1,2 @@
+LASTNAME,FIRSTNAME,SECONDNAME,ORGANIZATION,POSITION,PHONE,EMAIL
+Coganj Nina Elisabeth,,,Amazon,Trade and Foreign Direct Investment advisory,+3 (123) 913-04-78,opendata@hotmail.com
