@@ -23,11 +23,8 @@ def process_names_and_numbers(data):
                     row[5] = ''
 
 def create_table(data):
-    # Transpose the data to get columns as rows
-    transposed_data = list(map(list, zip(*data)))
-
-    # Find the maximum length for each column
-    column_widths = [max(len(str(cell)) for cell in col) for col in transposed_data]
+    # Find the maximum length for each column without transposing
+    column_widths = [max(len(str(row[i])) for row in data) for i in range(len(data[0]))]
 
     # Iterate through each row and pad each cell with extra spaces to match the column widths
     formatted_rows = [
@@ -36,6 +33,7 @@ def create_table(data):
     ]
 
     return formatted_rows
+
 
 def read_csv(file_path):
     with open(file_path, 'r', newline='', encoding='utf-8') as file:
