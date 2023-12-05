@@ -1,29 +1,13 @@
-import csv
 import re
+
+input_file_path = 'phonebook_raw.csv'
+output_file_path = 'phonebook_sorted.csv'
 
 def format_phone_number(digits):
     return f"+3 ({digits[0:3]})-{digits[3:6]}-{digits[6:8]}-{digits[8:10]}"
 
-def process_names_and_numbers(data):
-    for i, row in enumerate(data):
-        if i > 0:  # Skip the header row
-            if len(row) > 1:
-                row[0], row[1] = re.split(r'\s+', row[0], 1) if ' ' in row[0] else (row[0], row[1])
-            if len(row) > 2:
-                row[1], row[2] = re.split(r'\s+', row[1], 1) if ' ' in row[1] else (row[1], row[2])
-
-            if len(row) > 5:
-                # Check if there is a phone number
-                phone_digits = re.sub(r'\D', '', row[5])
-                if phone_digits:
-                    # Use the specified formatting for phone numbers
-                    row[5] = format_phone_number(phone_digits)
-                else:
-                    # If no phone number, leave the column empty
-                    row[5] = ''
-
 def create_table(data):
-    # Find the maximum length for each column without transposing
+    # Find the maximum length for each column 
     column_widths = [max(len(str(row[i])) for row in data) for i in range(len(data[0]))]
 
     # Iterate through each row and pad each cell with extra spaces to match the column widths
@@ -34,30 +18,45 @@ def create_table(data):
 
     return formatted_rows
 
+# Read input data from the file
+with open(input_file_path, 'r', encoding='utf-8') as input_file:
+    input_data = input_file.read()
 
-def read_csv(file_path):
-    with open(file_path, 'r', newline='', encoding='utf-8') as file:
-        reader = csv.reader(file)
-        data = [row for row in reader]
+# Process the data and create a table
+output_data = []
+for line in input_data.splitlines():
+    # Count the number of commas in the line
+    comma_count = line.count(',')
 
-    return data
+    # Add extra commas if needed to match the desired count
+    if comma_count < 7:  # 7 is the desired number of commas in each row
+        line += ',' * (7 - comma_count)
 
-def write_csv(file_path, formatted_rows):
-    with open(file_path, 'w', newline='', encoding='utf-8') as file:
-        for row in formatted_rows:
-            file.write(row + '\n')
+    # Separate names in the beginning
+    row = line.split(',')
+    if len(row) > 1:
+        row[0], row[1] = re.split(r'\s+', row[0], 1) if ' ' in row[0] else (row[0], row[1])
+    if len(row) > 2:
+        row[1], row[2] = re.split(r'\s+', row[1], 1) if ' ' in row[1] else (row[1], row[2])
 
-def main():
-    file_path = 'phonebook_raw.csv'
-    raw_data = read_csv(file_path)
+    # Format phone number if available
+    if len(row) > 5:
+        # Check if there is a phone number
+        phone_digits = re.sub(r'\D', '', row[5])
+        if phone_digits:
+            # Use the specified formatting for phone numbers
+            row[5] = format_phone_number(phone_digits)
+        else:
+            # If no phone number, leave the column empty
+            row[5] = ''
 
-    # Process names and format numbers using regex
-    process_names_and_numbers(raw_data)
+    # Append the modified line to the output data
+    output_data.append(row)
 
-    formatted_rows = create_table(raw_data)
+# Format the table using the create_table function
+formatted_table = create_table(output_data)
 
-    # Write the formatted table to output.csv
-    write_csv('phonebook_sorted.csv', formatted_rows)
-
-if __name__ == "__main__":
-    main()
+# Join the modified lines and write to the output file
+modified_data = "\n".join(formatted_table)
+with open(output_file_path, 'w', encoding='utf-8') as output_file:
+    output_file.write(modified_data)
