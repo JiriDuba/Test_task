@@ -1,5 +1,6 @@
 import re
 
+
 input_file_path = 'phonebook_raw.csv'
 output_file_path = 'phonebook_sorted.csv'
 
@@ -53,8 +54,19 @@ for line in input_data.splitlines():
     # Append the modified line to the output data
     output_data.append(row)
 
+# Merge duplicates based on the first two columns
+merged_data = [output_data[0]]
+
+for i in range(1, len(output_data)):
+    if output_data[i][:2] == merged_data[-1][:2]:  # Check if the names in the first two columns are the same
+        for j in range(len(output_data[i])):
+            if output_data[i][j] != '':
+                merged_data[-1][j] = output_data[i][j]  # Merge values from the current row
+    else:
+        merged_data.append(output_data[i])  # Add the row to merged_data if names are different
+
 # Format the table using the create_table function
-formatted_table = create_table(output_data)
+formatted_table = create_table(merged_data)
 
 # Join the modified lines and write to the output file
 modified_data = "\n".join(formatted_table)
