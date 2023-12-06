@@ -1,6 +1,5 @@
 import re
 
-
 input_file_path = 'phonebook_raw.csv'
 output_file_path = 'phonebook_sorted.csv'
 
@@ -58,10 +57,11 @@ for line in input_data.splitlines():
 merged_data = [output_data[0]]
 
 for i in range(1, len(output_data)):
-    if output_data[i][:2] == merged_data[-1][:2]:  # Check if the names in the first two columns are the same
-        for j in range(len(output_data[i])):
-            if output_data[i][j] != '':
-                merged_data[-1][j] = output_data[i][j]  # Merge values from the current row
+    current_names = output_data[i][:2]
+    previous_names = merged_data[-1][:2]
+
+    if current_names == previous_names:
+        output_data[i] = [current if current != '' else previous for current, previous in zip(output_data[i], merged_data[-1])]
     else:
         merged_data.append(output_data[i])  # Add the row to merged_data if names are different
 
